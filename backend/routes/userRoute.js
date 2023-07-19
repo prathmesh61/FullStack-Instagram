@@ -1,8 +1,15 @@
 import express from "express";
-import { registerUser } from "../controllers/userController.js";
+import {
+  loginUser,
+  registerUser,
+  userProfile,
+} from "../controllers/userController.js";
+import { verifyToken } from "../lib/verifyToken.js";
 
-const route = express.Router();
+const router = express.Router();
 
-route.post("/createuser", registerUser);
+router.route("/createuser").post(registerUser);
+router.route("/login").post(loginUser);
+router.route("/profile").get(verifyToken, userProfile);
 
-module.exports = { route };
+export default router;
