@@ -66,7 +66,89 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// user profile route:- /api/profile
+// user profile route:- /api/profile/:id
 export const userProfile = async (req, res) => {
-  console.log(req.user);
+  const { id } = req.params;
+  try {
+    const user = await prisma.user.findUnique({ where: { id } });
+
+    res.status(200).json({ user });
+  } catch (error) {
+    res.ststus(401).json({
+      success: false,
+      message: "user not exists",
+      error: error.message,
+    });
+  }
 };
+
+// user update route:- /api/update/:id
+export const updateUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await prisma.user.findUnique({ where: { id } });
+    if (!user) {
+      throw new Error("you can not update this user");
+    }
+    if (id === req.user.id) {
+      const updateUser = await prisma.user.update({
+        where: { id },
+        data: { ...req.body },
+      });
+      res.status(200).json({
+        success: true,
+        message: "user updated successfully",
+        updateUser,
+      });
+    }
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: "user not exists",
+      error: error.message,
+    });
+  }
+};
+
+// follow user route:- /api/follow/:id
+export const followUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const yourID = req.user.id;
+
+    const followUser = await prisma.user.update({
+      where: { id },
+      data: {
+        followers: {
+          push: yourID,
+        },
+      },
+    });
+    res.status(200).json({ success: true, followUser });
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+// unfollow user route:- /api/unfollow/:id
+// export const UnfollowUser = async (req, res) => {
+//   const { id } = req.params;
+//   try {
+//     const yourID = req.user.id;
+
+//     const UnfollowUser = await prisma.user.update({
+//       where: { id },
+//       data: {
+//         followers: {},
+//       },
+//     });
+//     res.status(200).json({ success: true, UnfollowUser });
+//   } catch (error) {
+//     res.status(401).json({
+//       success: false,
+//       error: error.message,
+//     });
+//   }
+// };
