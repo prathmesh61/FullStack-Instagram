@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  followUser,
+  followAndunfollow,
   loginUser,
   registerUser,
   userProfile,
@@ -13,7 +13,6 @@ router.route("/createuser").post(registerUser);
 router.route("/login").post(loginUser);
 router.route("/profile/:id").get(verifyToken, userProfile);
 router.post("/profile/:id", verifyToken, userProfile);
-router.put("/follow/:id", verifyToken, followUser);
-// router.put("/unfollow/:id", verifyToken, UnfollowUser);
+router.put("/follow/:id", verifyToken, followAndunfollow);
 
 export default router;

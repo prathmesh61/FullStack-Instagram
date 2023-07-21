@@ -111,37 +111,41 @@ export const updateUser = async (req, res) => {
 };
 
 // follow user route:- /api/follow/:id
-export const followUser = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const yourID = req.user.id;
-
-    const followUser = await prisma.user.update({
-      where: { id },
-      data: {
-        followers: {
-          push: yourID,
-        },
-      },
-    });
-    res.status(200).json({ success: true, followUser });
-  } catch (error) {
-    res.status(401).json({
-      success: false,
-      error: error.message,
-    });
-  }
-};
-// unfollow user route:- /api/unfollow/:id
-// export const UnfollowUser = async (req, res) => {
+// export const followUser = async (req, res) => {
 //   const { id } = req.params;
 //   try {
 //     const yourID = req.user.id;
 
+//     const followUser = await prisma.user.update({
+//       where: { id },
+//       data: {
+//         followers: {
+//           push: yourID,
+//         },
+//       },
+//     });
+//     res.status(200).json({ success: true, followUser });
+//   } catch (error) {
+//     res.status(401).json({
+//       success: false,
+//       error: error.message,
+//     });
+//   }
+// };
+
+// unfollow user route:- /api/unfollow/:id
+// export const UnfollowUser = async (req, res) => {
+//   const { id } = req.params;
+//   const yourID = req.user.id;
+//   const user = await prisma.user.findUnique({ where: { id } });
+
+//   let updateFollowers = [...(user.followers || [])];
+//   updateFollowers = updateFollowers.filter((item) => item !== yourID);
+//   try {
 //     const UnfollowUser = await prisma.user.update({
 //       where: { id },
 //       data: {
-//         followers: {},
+//         followers: updateFollowers,
 //       },
 //     });
 //     res.status(200).json({ success: true, UnfollowUser });
@@ -152,3 +156,44 @@ export const followUser = async (req, res) => {
 //     });
 //   }
 // };
+
+// followAndunfollow user route:- /api/follow/:id
+export const followAndunfollow = async (req, res) => {
+  const { id } = req.params;
+  const yourID = req.user.id;
+  const user = await prisma.user.findUnique({ where: { id } });
+  try {
+    if (!user.followers.includes(yourID)) {
+      const followUser = await prisma.user.update({
+        where: { id },
+        data: {
+          followers: {
+            push: yourID,
+          },
+        },
+      });
+      res
+        .status(200)
+        .json({ success: true, message: "user updated", followUser });
+    } else {
+      let updateFollowers = [...(user.followers || [])];
+      updateFollowers = updateFollowers.filter((item) => item !== yourID);
+      const UnfollowUser = await prisma.user.update({
+        where: { id },
+        data: {
+          followers: updateFollowers,
+        },
+      });
+      res
+        .status(200)
+        .json({ success: true, message: "user updated", UnfollowUser });
+    }
+    // res.status(200).json({ success: true, message: "user updated" });
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      error: error.message,
+      message: "you are not authorized to perform this action",
+    });
+  }
+};
