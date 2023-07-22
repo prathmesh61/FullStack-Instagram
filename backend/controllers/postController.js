@@ -62,6 +62,24 @@ export const singlepost = async (req, res) => {
     res.status(400).json({ message: error.message, success: false });
   }
 };
+
+// get user personal post route:- /api/my-posts
+export const myposts = async (req, res) => {
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        userId: req.user.id,
+      },
+    });
+    res.status(200).json({ posts, success: true, message: "all your posts" });
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+      success: false,
+      message: "you are not authorized to perform this action",
+    });
+  }
+};
 // like post route:- /api/like/:id
 export const likepost = async (req, res) => {
   const { id } = req.params;
@@ -72,21 +90,7 @@ export const likepost = async (req, res) => {
     },
   });
   try {
-    if (post.likesId.includes(yourID)) {
-      let updateLikes = [...(post.likesId || [])];
-      updateLikes = updateLikes.filter((item) => item !== yourID);
-      const dislike = await prisma.post.update({
-        where: {
-          id,
-        },
-        data: {
-          likesId: {
-            push: updateLikes,
-          },
-        },
-      });
-      res.status(200).json({ dislike, success: true });
-    } else {
+    if (!post.likesId.includes(yourID)) {
       const like = await prisma.post.update({
         where: {
           id,
@@ -98,14 +102,38 @@ export const likepost = async (req, res) => {
         },
       });
       res.status(200).json({ like, success: true });
+    } else {
+      let updateLikes = [...(post.likesId || [])];
+      updateLikes = updateLikes.filter((item) => item !== yourID);
+      const dislike = await prisma.post.update({
+        where: {
+          id,
+        },
+        data: {
+          likesId: updateLikes,
+        },
+      });
+      res.status(200).json({ dislike, success: true });
     }
   } catch (error) {
-    res
-      .status(400)
-      .json({
-        error: error.message,
-        success: false,
-        message: "you are not authorized to perform this action",
-      });
+    res.status(400).json({
+      error: error.message,
+      success: false,
+      message: "you are not authorized to perform this action",
+    });
+  }
+};
+
+// trending post route:- /api/trending-posts
+export const trendingPost = async (req, res) => {
+  try {
+    const posts = await prisma.post.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    res.status(200).json({ posts, success: true });
+  } catch (error) {
+    res.status(400).json({ error: error.message, success: false });
   }
 };
