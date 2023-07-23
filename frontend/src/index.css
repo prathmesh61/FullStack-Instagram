@@ -1,0 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@600&family=Outfit:wght@300;500;700;800&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+body {
+  font-family: "Outfit", sans-serif;
+}
