@@ -1,10 +1,24 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useApi } from "../hooks/useApi";
 
 const RegisterScreen = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const register = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    try {
+      const res = await useApi.post("/createuser", { email, name, password });
+      if (res.data) {
+        localStorage.setItem("user", JSON.stringify(res.data));
+        navigate("/");
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen px-20">
@@ -24,7 +38,7 @@ const RegisterScreen = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Create and account
               </h1>
-              <form className="space-y-4 md:space-y-6 ">
+              <form className="space-y-4 md:space-y-6 " onSubmit={register}>
                 <div>
                   <label
                     htmlFor="username"
@@ -71,44 +85,21 @@ const RegisterScreen = () => {
                   />
                 </div>
 
-                <div className="flex items-start">
-                  <div className="flex items-center h-5">
-                    <input
-                      id="terms"
-                      aria-describedby="terms"
-                      type="checkbox"
-                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="terms"
-                      className="font-light text-gray-500 dark:text-gray-300"
-                    >
-                      I accept the
-                      <a
-                        className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                        href="#"
-                      >
-                        Terms and Conditions
-                      </a>
-                    </label>
-                  </div>
-                </div>
-
                 <button
                   type="submit"
                   className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 "
                 >
                   Create an account
                 </button>
+              </form>
+              <div className="text-center">
                 <Link
                   to="/login"
-                  className="text-sm font-medium text-gray-900 dark:text-white hover:underline "
+                  className="text-sm font-medium text-gray-900 dark:text-white hover:underline mt-4"
                 >
                   don't have an account, please login here.
                 </Link>
-              </form>
+              </div>
             </div>
           </div>
         </div>

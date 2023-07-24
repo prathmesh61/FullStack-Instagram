@@ -24,6 +24,7 @@ const router = createBrowserRouter([
     element: <RegisterScreen />,
   },
 ]);
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>

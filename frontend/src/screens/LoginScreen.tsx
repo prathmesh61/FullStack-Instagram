@@ -13,6 +13,8 @@ const LoginScreen = () => {
       password,
     });
     console.log(res.data);
+    localStorage.setItem("user", JSON.stringify(res.data));
+    navigate("/");
   };
 
   return (
@@ -74,12 +76,14 @@ const LoginScreen = () => {
                   Login an account
                 </button>
               </form>
-              <Link
-                to="/register"
-                className="text-sm font-medium text-gray-900 dark:text-white hover:underline mt-4"
-              >
-                if yoh have an account? Create Account
-              </Link>
+              <div className="text-center">
+                <Link
+                  to="/register"
+                  className="text-sm font-medium text-gray-900 dark:text-white hover:underline mt-4"
+                >
+                  if yoh have an account? Create Account
+                </Link>
+              </div>
             </div>
           </div>
         </div>
