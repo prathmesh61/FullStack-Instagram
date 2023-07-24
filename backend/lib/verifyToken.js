@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken";
 import { prisma } from "../prisma/index.js";
 export const verifyToken = async (req, res, next) => {
-  const token = req.cookies.access_token;
+  let token;
+  token = req.cookies.access_token;
   if (!token) return res.status(401).send("token not excist");
 
   try {

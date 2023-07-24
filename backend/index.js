@@ -5,7 +5,7 @@ import postRouter from "./routes/postRoute.js";
 import commentRouter from "./routes/commentRoute.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-
+import cors from "cors";
 dotenv.config();
 // express app
 const app = express();
@@ -17,6 +17,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors());
 
 // routes
 app.use("/api", userRouter);

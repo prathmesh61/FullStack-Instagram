@@ -10,25 +10,24 @@ export const registerUser = async (req, res) => {
       throw new Error("Please fill all the fields");
     }
 
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (user) {
+    const exuser = await prisma.user.findUnique({ where: { email } });
+    if (exuser) {
       throw new Error("User already exists");
     }
 
     const user_password = bcrypt.hashSync(password, 10);
-    const createUser = await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         email,
         name,
         hashpassword: user_password,
       },
     });
-    const token = jwt.sign({ id: createUser.id }, process.env.JWT);
+    const token = jwt.sign({ id: user.id }, process.env.JWT);
     res.status(201).cookie("access_token", token, { httpOnly: true }).json({
       success: true,
       msg: "User Create Successfuly",
-      createUser,
-      token,
+      user,
     });
   } catch (error) {
     res.status(404).json({
@@ -65,7 +64,16 @@ export const loginUser = async (req, res) => {
     });
   }
 };
-
+// get login user from body route:- /api/getuser
+export const getuser = async (req, res) => {
+  const { id } = req.user;
+  try {
+    const user = await prisma.user.findUnique({ where: { id } });
+    res.status(200).json({ user });
+  } catch (error) {
+    res.status(404).json({ message: error.message, success: false });
+  }
+};
 // user profile route:- /api/profile/:id
 export const userProfile = async (req, res) => {
   const { id } = req.params;
@@ -195,5 +203,17 @@ export const followAndunfollow = async (req, res) => {
       error: error.message,
       message: "you are not authorized to perform this action",
     });
+  }
+};
+
+// loogout user route:- /api/logout
+export const logoutUser = async (req, res) => {
+  try {
+    res
+      .status(200)
+      .cookie("access_token", "", { httpOnly: true })
+      .json({ success: true, message: "user logged out" });
+  } catch (error) {
+    console.log(error.message);
   }
 };
