@@ -1,4 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+import Leftbar from "../components/Leftbar";
+import TimeLine from "../components/TimeLine";
 
 const HomeScreen = () => {
   const navigate = useNavigate();
@@ -7,18 +10,17 @@ const HomeScreen = () => {
     navigate("/login");
   }
 
-  const user: unknown = JSON.parse(localStorage.getItem("user") || "{}");
-
-  const logout = async () => {
-    localStorage.removeItem("user");
-    navigate("/login");
-  };
-
   return (
-    <div>
-      Home: {user?.user?.name}
-      <br />
-      <button onClick={logout}>logout</button>
+    <div className="mx-10 md:mx-15">
+      <Header />
+      <div className="flex mt-10">
+        <div className="h-full w-[25%] md:w-[20%] ">
+          <Leftbar />
+        </div>
+        <div className="g-full w-[75%] ">
+          <TimeLine />
+        </div>
+      </div>
     </div>
   );
 };

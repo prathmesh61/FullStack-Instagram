@@ -1,39 +1,22 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useApi } from "../hooks/useApi";
+import { Link } from "react-router-dom";
+import { useRegister } from "../hooks/useRegister";
 
 const RegisterScreen = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-  const register = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    try {
-      const res = await useApi.post("/createuser", { email, name, password });
-      if (res.data) {
-        localStorage.setItem("user", JSON.stringify(res.data));
-        navigate("/");
-      }
-    } catch (error) {
-      alert(error);
-    }
-  };
-
+  const { setPassword, setName, setEmail, register } = useRegister();
   return (
-    <div className="flex flex-col items-center justify-center h-screen px-20">
+    <div className="flex flex-col gap-4 items-center justify-center h-screen px-20">
       {/* logo */}
-      <div className="relative w-[200px] h-[200px]">
+      <div className="relative w-[200px] h-[60px] ">
         <img
           src="src\assets\IGname.png"
           alt="logo"
-          className="w-full h-full object-contain"
+          className="w-full h-full object-contain bg-white rounded-lg"
         />
       </div>
       {/* loginform */}
-      <section className="bg-gray-50 ">
+      <section className=" ">
         <div className="flex flex-col items-center justify-center px-6 mx-auto  lg:py-0">
-          <div className="w-[400px] h-[60vh] bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div className="w-[400px] h-[60vh] flex justify-center flex-col items-center bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Create and account
