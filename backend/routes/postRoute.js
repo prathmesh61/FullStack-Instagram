@@ -1,5 +1,4 @@
 import express from "express";
-
 import { verifyToken } from "../lib/verifyToken.js";
 import {
   allpost,
@@ -13,12 +12,12 @@ import {
 
 const router = express.Router();
 
-router.post("/newpost", verifyToken, newpost);
-router.delete("/delete-post/:id", verifyToken, deletepost);
+router.post("/newpost", newpost);
 router.get("/all-posts", allpost);
 router.get("/post/:id", singlepost);
-router.get("/my-posts", verifyToken, myposts);
 router.get("/trending-posts", trendingPost);
-router.put("/like/:id", verifyToken, likepost);
+router.put("/like/:id", likepost);
+router.delete("/delete-post/:id", deletepost);
+router.get("/my-posts/:id", myposts);
 
 export default router;

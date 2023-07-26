@@ -65,10 +65,14 @@ export const singlepost = async (req, res) => {
 
 // get user personal post route:- /api/my-posts
 export const myposts = async (req, res) => {
+  const { id } = req.params;
   try {
     const posts = await prisma.post.findMany({
       where: {
-        userId: req.user.id,
+        userId: id,
+      },
+      include: {
+        user: true,
       },
     });
     res.status(200).json({ posts, success: true, message: "all your posts" });

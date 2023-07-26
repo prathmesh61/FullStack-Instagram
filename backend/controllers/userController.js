@@ -23,10 +23,9 @@ export const registerUser = async (req, res) => {
         hashpassword: user_password,
       },
     });
-    const token = jwt.sign({ id: user.id }, process.env.JWT);
-    res.status(201).cookie("access_token", token, { httpOnly: true }).json({
+    res.status(201).json({
       success: true,
-      msg: "User Create Successfuly",
+
       user,
     });
   } catch (error) {
@@ -52,9 +51,9 @@ export const loginUser = async (req, res) => {
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT);
     res
-      .status(200)
       .cookie("access_token", token, { httpOnly: true })
-      .json({ success: true, message: "Login successful", user });
+      .status(200)
+      .json({ user, token, success: true });
   } catch (error) {
     console.log(error.message);
     res.status(404).json({

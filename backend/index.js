@@ -13,12 +13,9 @@ const app = express();
 const port = 7000;
 
 // middleware
-app.use(express.json());
-app.use(bodyParser.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
-app.use(cors());
-
+app.use(express.json());
 // routes
 app.use("/api", userRouter);
 app.use("/api", postRouter);
