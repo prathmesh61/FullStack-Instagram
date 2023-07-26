@@ -1,5 +1,6 @@
 import { useGetStrogeItem } from "../hooks/useGetStrogeItem";
 import Avatar from "react-avatar";
+import UserPosts from "./UserPosts";
 
 const TimeLine = () => {
   const { loginUser } = useGetStrogeItem();
@@ -22,6 +23,7 @@ const TimeLine = () => {
           Post{" "}
         </button>
       </div>
+      <UserPosts />
     </div>
   );
 };
