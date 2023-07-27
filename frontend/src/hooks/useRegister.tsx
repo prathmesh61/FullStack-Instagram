@@ -14,8 +14,7 @@ export const useRegister = () => {
     try {
       const res = await useApi.post("/createuser", { email, name, password });
       if (res.data) {
-        localStorage.setItem("user", JSON.stringify(res.data));
-        navigate("/");
+        navigate("/login");
       }
     } catch (error) {
       alert(error);

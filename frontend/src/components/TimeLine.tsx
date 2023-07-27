@@ -10,7 +10,7 @@ const TimeLine = () => {
       <textarea
         placeholder="What's on your mind?"
         cols={60}
-        rows={5}
+        rows={2}
         className="textarea  textarea-bordered focus:outline-none"
       ></textarea>
       <div className="flex justify-between gap-2 w-[480px] mt-4">

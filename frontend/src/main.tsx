@@ -9,6 +9,9 @@ const queryClient = new QueryClient();
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginScreen from "./screens/LoginScreen.tsx";
 import RegisterScreen from "./screens/RegisterScreen.tsx";
+import TrendingPostScreen from "./screens/TrendingPostScreen.tsx";
+import AllPostsScreen from "./screens/AllPostsScreen.tsx";
+import ProfileScreen from "./screens/ProfileScreen.tsx";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +25,18 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterScreen />,
+  },
+  {
+    path: "/trending",
+    element: <TrendingPostScreen />,
+  },
+  {
+    path: "/all-posts",
+    element: <AllPostsScreen />,
+  },
+  {
+    path: "/profile/:id",
+    element: <ProfileScreen />,
   },
 ]);
 

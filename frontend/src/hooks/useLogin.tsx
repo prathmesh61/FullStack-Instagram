@@ -9,10 +9,14 @@ export const useLogin = () => {
 
   const login = async (e: any) => {
     e.preventDefault();
-    const res = await useApi.post("/login", {
-      email,
-      password,
-    });
+    const res = await useApi.post(
+      "/login",
+      {
+        email,
+        password,
+      },
+      { headers: { "Content-Type": "application/json" }, withCredentials: true }
+    );
     console.log(res.data);
     localStorage.setItem("user", JSON.stringify(res.data));
     navigate("/");

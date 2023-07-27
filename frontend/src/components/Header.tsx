@@ -7,14 +7,14 @@ const Header = () => {
   const { loginUser } = useGetStrogeItem();
   const { logout } = useLogout();
   return (
-    <div className="  text-white h-[80px] flex justify-between items-center">
-      <div className="w-[40px] h-[30px] ">
+    <div className="  text-white h-[80px] flex justify-between items-center border-b-2 border-gray-800">
+      <Link to="/" className="w-[40px] h-[30px] ">
         <img
-          src="./src/assets/IGlogo.png"
+          src="\src\assets\instagram.png"
           alt="logo"
           className="object-contain"
         />
-      </div>
+      </Link>
       <div className="flex items-center space-x-8">
         <div className="flex item-center space-x-8">
           <BsSearch className="text-white w-[16px] h-[16px] cursor-pointer" />
