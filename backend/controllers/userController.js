@@ -50,10 +50,12 @@ export const loginUser = async (req, res) => {
       throw new Error("wrong credentials provided");
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT);
-    res
-      .cookie("access_token", token, { httpOnly: true })
-      .status(200)
-      .json({ user, token, success: true });
+    const response = res.cookie("access_cookie", token).json({
+      message: "Login successful",
+      user,
+    });
+
+    return response;
   } catch (error) {
     console.log(error.message);
     res.status(404).json({
@@ -65,7 +67,7 @@ export const loginUser = async (req, res) => {
 };
 // get login user from body route:- /api/getuser
 export const getuser = async (req, res) => {
-  const { id } = req.user;
+  const { id } = req.params;
   try {
     const user = await prisma.user.findUnique({ where: { id } });
     res.status(200).json({ user });
@@ -81,7 +83,7 @@ export const userProfile = async (req, res) => {
 
     res.status(200).json({ user });
   } catch (error) {
-    res.ststus(401).json({
+    res.status(401).json({
       success: false,
       message: "user not exists",
       error: error.message,

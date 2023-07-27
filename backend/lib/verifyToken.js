@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { prisma } from "../prisma/index.js";
 export const verifyToken = async (req, res, next) => {
-  const token = req.cookies.access_token;
+  const token = req.cookies.access_cookie;
   if (!token) return res.status(401).send("token not valid");
 
   try {
@@ -10,6 +10,7 @@ export const verifyToken = async (req, res, next) => {
     req.user = await prisma.user.findUnique({
       where: {
         id: verifyToken.id,
+        email: verifyToken.email,
       },
     });
 

@@ -13,9 +13,9 @@ const router = express.Router();
 
 router.route("/createuser").post(registerUser);
 router.route("/login").post(loginUser);
-router.route("/profile/:id").get(verifyToken, userProfile);
+router.route("/profile/:id").get(userProfile);
 router.get("/getuser", verifyToken, getuser);
-router.post("/profile/:id", verifyToken, userProfile);
+// router.post("/profile/:id", verifyToken, userProfile);
 router.put("/follow/:id", verifyToken, followAndunfollow);
 router.post("/logout", verifyToken, logoutUser);
 

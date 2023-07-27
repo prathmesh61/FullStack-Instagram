@@ -42,7 +42,11 @@ export const deletepost = async (req, res) => {
 // all post route:- /api/all-posts
 export const allpost = async (req, res) => {
   try {
-    const posts = await prisma.post.findMany({});
+    const posts = await prisma.post.findMany({
+      include: {
+        user: true,
+      },
+    });
     res.status(200).json({ posts, success: true });
   } catch (error) {
     res.status(400).json({ message: error.message, success: false });
@@ -133,7 +137,10 @@ export const trendingPost = async (req, res) => {
   try {
     const posts = await prisma.post.findMany({
       orderBy: {
-        createdAt: "desc",
+        likesId: "desc",
+      },
+      include: {
+        user: true,
       },
     });
     res.status(200).json({ posts, success: true });
