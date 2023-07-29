@@ -4,6 +4,7 @@ import { useLogin } from "../hooks/useLogin";
 
 const LoginScreen = () => {
   // const navigate = useNavigate();
+
   const { setPassword, setEmail, login } = useLogin();
   return (
     <div className="flex flex-col gap-4 items-center justify-center h-screen px-20">

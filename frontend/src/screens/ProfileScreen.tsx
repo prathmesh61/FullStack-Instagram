@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useApi } from "../hooks/useApi";
 import Header from "../components/Header";
 import Avatar from "react-avatar";
+import UserPosts from "../components/UserPosts";
 
 const ProfileScreen = () => {
   const { id } = useParams();
@@ -14,19 +15,21 @@ const ProfileScreen = () => {
       useApi.get(`/profile/${id}`).then((res) => {
         return res.data;
       }),
-    onSuccess() {},
+    onSuccess() {
+      queryClient.invalidateQueries("UserProfile");
+    },
   });
-  queryClient.invalidateQueries("UserProfile");
-  console.log(data);
+
+  // console.log(data);
 
   return (
     <div className="mx-10 md:mx-15">
       <Header />
-      <div className="flex flex-col items-center justify-start mt-10 w-[500px] h-[300px] mx-auto border-2 p-2">
-        <div className="flex gap-4 justify-evenly  w-full items-center">
+      <div className="flex flex-col items-center justify-center mt-10  mx-auto  p-2">
+        <div className="flex gap-4 justify-evenly   items-center w-[500px] h-[300px] ">
           <Avatar name={data?.user?.name} size="80" round={true} />
           <div className="flex flex-col ">
-            <p className="text-lg font-semibold text-white">
+            <p className="text-2xl font-semibold text-white">
               {data?.user?.name}
             </p>
             <p className="text-sm text-white">{data?.user?.email}</p>
@@ -46,6 +49,7 @@ const ProfileScreen = () => {
             </div>
           </div>
         </div>
+        <UserPosts />
       </div>
     </div>
   );

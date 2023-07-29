@@ -3,6 +3,7 @@ import { useRegister } from "../hooks/useRegister";
 
 const RegisterScreen = () => {
   const { setPassword, setName, setEmail, register } = useRegister();
+
   return (
     <div className="flex flex-col gap-4 items-center justify-center h-screen px-20">
       {/* logo */}

@@ -3,6 +3,9 @@ import { useGetStrogeItem } from "../hooks/useGetStrogeItem";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import { useMutation, useQueryClient } from "react-query";
+import { useApi } from "../hooks/useApi";
+import { toast } from "react-toastify";
 type postType = {
   post: {
     createdAt: string;
@@ -13,15 +16,37 @@ type postType = {
     user: {
       name: string;
       email: string;
+      id: string;
     };
     likesId: string[];
     commentsId: string[];
   };
 };
 const Post = ({ post }: postType) => {
-  // console.log(post);
+  const queryClient = useQueryClient();
 
   const { loginUser } = useGetStrogeItem();
+  // console.log(post);
+  const like = async () => {
+    try {
+      const res = await useApi.put(`/like/${post?.id}`, {
+        yourId: loginUser?.user.id,
+      });
+
+      // console.log(res.data);
+      return res.data;
+    } catch (error: any) {
+      console.log(error.stack);
+    }
+  };
+  const mutation = useMutation(["likePost"], like, {
+    onSuccess: () => {
+      // Invalidate and refetch
+      toast.success("Done!");
+      queryClient.invalidateQueries("likePost");
+    },
+  });
+
   return (
     <div className="flex flex-col mt-4 w-[400px] p-4 border-2 border-gray-800 rounded-md">
       <Link
@@ -45,7 +70,7 @@ const Post = ({ post }: postType) => {
         </div>
       )}
       <div className="flex gap-4 items-center mt-4">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1" onClick={mutation.mutate}>
           <AiOutlineHeart size={25} className="cursor-pointer text-gray-400" />
           {post?.likesId.length}
         </div>
