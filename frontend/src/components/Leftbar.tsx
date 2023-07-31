@@ -3,7 +3,9 @@ import { SlSpeedometer } from "react-icons/sl";
 import { CgProfile } from "react-icons/cg";
 import { BiTrendingUp } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import { useGetStrogeItem } from "../hooks/useGetStrogeItem";
 const Leftbar = () => {
+  const { loginUser } = useGetStrogeItem();
   return (
     <div className="flex flex-col items-start gap-8">
       <Link
@@ -28,7 +30,7 @@ const Leftbar = () => {
         <h3 className="text-white text-[14px] font-semibold">Explore</h3>
       </Link>
       <Link
-        to="/profile/:id"
+        to={`/profile/${loginUser?.user.id}`}
         className="flex justify-center  items-center gap-2 hover:bg-gray-600/50 px-2 py-1 hover:rounded-md"
       >
         <CgProfile className="text-white w-[16px] h-[16px] cursor-pointer" />

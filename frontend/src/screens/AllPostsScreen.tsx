@@ -13,9 +13,11 @@ const AllPostsScreen = () => {
       useApi.get(`/all-posts`).then((res) => {
         return res.data;
       }),
-    onSuccess() {},
+    onSuccess() {
+      queryClient.invalidateQueries("all-posts");
+    },
   });
-  queryClient.invalidateQueries("all-posts");
+
   return (
     <div className="mx-10 md:mx-15">
       <Header />

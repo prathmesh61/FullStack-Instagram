@@ -2,7 +2,7 @@ import { prisma } from "../prisma/index.js";
 
 // create post route:- /api/newpost
 export const newpost = async (req, res) => {
-  const { content, img } = req.body;
+  const { content, img, id } = req.body;
   if (content === "") {
     throw new error("Please fill all the field");
   }
@@ -13,7 +13,7 @@ export const newpost = async (req, res) => {
         img,
         user: {
           connect: {
-            id: req.user.id,
+            id: id,
           },
         },
       },
@@ -91,28 +91,29 @@ export const myposts = async (req, res) => {
 // like post route:- /api/like/:id
 export const likepost = async (req, res) => {
   const { id } = req.params;
-  const yourID = req.user.id;
+  const yourId = req.body.yourId;
+
   const post = await prisma.post.findUnique({
     where: {
       id,
     },
   });
   try {
-    if (!post.likesId.includes(yourID)) {
+    if (!post.likesId.includes(yourId)) {
       const like = await prisma.post.update({
         where: {
           id,
         },
         data: {
           likesId: {
-            push: yourID,
+            push: yourId,
           },
         },
       });
       res.status(200).json({ like, success: true });
     } else {
       let updateLikes = [...(post.likesId || [])];
-      updateLikes = updateLikes.filter((item) => item !== yourID);
+      updateLikes = updateLikes.filter((item) => item !== yourId);
       const dislike = await prisma.post.update({
         where: {
           id,

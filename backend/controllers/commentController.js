@@ -2,12 +2,13 @@ import { prisma } from "../prisma/index.js";
 
 // create comment route:- /api/create-comment/:postId
 export const newComment = async (req, res) => {
+  const { id } = req.body;
   try {
     const comment = await prisma.comment.create({
       data: {
         text: req.body.text,
         postId: req.params.postId,
-        userId: req.user.id,
+        userId: id,
       },
     });
     // comment push to post comment array

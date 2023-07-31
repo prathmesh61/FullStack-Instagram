@@ -16,7 +16,7 @@ router.route("/login").post(loginUser);
 router.route("/profile/:id").get(userProfile);
 router.get("/getuser", verifyToken, getuser);
 // router.post("/profile/:id", verifyToken, userProfile);
-router.put("/follow/:id", verifyToken, followAndunfollow);
+router.put("/follow/:id", followAndunfollow);
 router.post("/logout", verifyToken, logoutUser);
 
 export default router;

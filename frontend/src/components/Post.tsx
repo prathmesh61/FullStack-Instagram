@@ -71,7 +71,14 @@ const Post = ({ post }: postType) => {
       )}
       <div className="flex gap-4 items-center mt-4">
         <div className="flex items-center gap-1" onClick={mutation.mutate}>
-          <AiOutlineHeart size={25} className="cursor-pointer text-gray-400" />
+          {post?.likesId.includes(loginUser?.user.id) ? (
+            <AiFillHeart size={25} className="cursor-pointer text-red-400" />
+          ) : (
+            <AiOutlineHeart
+              size={25}
+              className="cursor-pointer text-gray-400"
+            />
+          )}
           {post?.likesId.length}
         </div>
         <div className="flex items-center gap-1">

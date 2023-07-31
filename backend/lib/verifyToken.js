@@ -1,18 +1,18 @@
 import jwt from "jsonwebtoken";
 import { prisma } from "../prisma/index.js";
 export const verifyToken = async (req, res, next) => {
-  const token = req.cookies.access_cookie;
+  const cookies = req.headers.cookie;
+  const token = cookies.split("=")[1];
   if (!token) return res.status(401).send("token not valid");
 
   try {
     const verifyToken = jwt.verify(token, process.env.JWT);
-
-    req.user = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: verifyToken.id,
-        email: verifyToken.email,
       },
     });
+    req.user = user.id;
 
     next();
   } catch (error) {

@@ -50,7 +50,8 @@ export const loginUser = async (req, res) => {
       throw new Error("wrong credentials provided");
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT);
-    const response = res.cookie("access_cookie", token).json({
+    res.cookie("access_cookie", token, { httpOnly: true, sameSite: "lax" });
+    return res.status(200).json({
       message: "Login successful",
       user,
     });
@@ -169,7 +170,8 @@ export const updateUser = async (req, res) => {
 // followAndunfollow user route:- /api/follow/:id
 export const followAndunfollow = async (req, res) => {
   const { id } = req.params;
-  const yourID = req.user.id;
+  const yourID = req.body.yourID;
+  // console.log(yourID);
   const user = await prisma.user.findUnique({ where: { id } });
   try {
     if (!user.followers.includes(yourID)) {
